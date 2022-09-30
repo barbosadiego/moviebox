@@ -33,7 +33,9 @@ export default {
 @import '@/Functions';
 
 .header {
-  background-color: #000;
+  background-color: transparent;
+  position: relative;
+  z-index: 10;
 
   &__nav {
     display: flex;
@@ -87,7 +89,7 @@ export default {
         text-transform: capitalize;
       }
 
-      .menu-area{
+      .menu-area {
         width: 36px;
         height: 36px;
         background-color: var(--rose);
@@ -96,14 +98,14 @@ export default {
         justify-content: center;
         border-radius: 50%;
         cursor: pointer;
-        
+
         .menu {
           display: inline-block;
           width: 20px;
           height: 3px;
           background-color: var(--white);
           border-radius: 2px;
-          box-shadow: 0px 10px ;
+          box-shadow: 0px 10px;
           transform: translateY(-5px);
         }
       }
