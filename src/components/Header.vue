@@ -4,7 +4,7 @@
       <div class="logo">
         <img src="@/assets/Logo.svg" alt="" />
       </div>
-      <div class="search">
+      <div :class="['search', { active: isMenuMobile }]">
         <input
           type="text"
           name="search"
@@ -13,11 +13,11 @@
         />
         <img src="@/assets/Search.svg" alt="" />
       </div>
-      <div class="signin">
+      <div :class="['signin', { active: isMenuMobile }]">
         <span>sing in</span>
-        <div class="menu-area">
+        <button class="menu-area" @click="handleActive">
           <div class="menu"></div>
-        </div>
+        </button>
       </div>
     </nav>
   </header>
@@ -26,6 +26,19 @@
 <script>
 export default {
   name: 'HeaderComponent',
+  data() {
+    return {
+      isMenuMobile: false,
+    };
+  },
+  methods: {
+    handleActive() {
+      const mdQuerie = window.matchMedia('(max-width: 768px)');
+      if (mdQuerie.matches) {
+        this.isMenuMobile = !this.isMenuMobile;
+      }
+    },
+  },
 };
 </script>
 
@@ -80,6 +93,29 @@ export default {
           line-height: rem(24);
         }
       }
+
+      //search
+      &.active {
+        display: flex;
+        position: absolute;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 10;
+        width: 90%;
+        &::before {
+          content: '';
+          position: absolute;
+          width: 150vw;
+          top: -102px;
+          left: -50%;
+          right: 0px;
+          height: 600px;
+          background-color: rgba(0, 0, 0, 0.9);
+          z-index: -1;
+        }
+      }
     }
 
     .signin {
@@ -106,7 +142,9 @@ export default {
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+        border: none;
         cursor: pointer;
+        z-index: 10;
 
         .menu {
           display: inline-block;
@@ -114,8 +152,26 @@ export default {
           height: 3px;
           background-color: var(--white);
           border-radius: 2px;
-          box-shadow: 0px 10px;
+          box-shadow: 0px 10px var(--white);
           transform: translateY(-5px);
+          transition: 0.2s;
+        }
+      }
+
+      &.active .menu-area .menu {
+        transform: rotate(45deg);
+        box-shadow: none;
+        position: relative;
+        &::before {
+          content: '';
+          width: 20px;
+          height: 3px;
+          background-color: var(--white);
+          border-radius: 2px;
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          transform: rotate(-90deg);
         }
       }
     }

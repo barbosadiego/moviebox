@@ -175,7 +175,7 @@ export default {
         width: 100%;
         height: 600px;
         object-fit: cover;
-        object-position: left;
+        object-position: center;
         grid-column: 1/-1;
       }
 
@@ -243,7 +243,7 @@ export default {
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      z-index: 10;
+      z-index: 5;
       @media screen and (max-width: 768px) {
         padding: 15px 30px;
       }
