@@ -1,7 +1,7 @@
 <template>
   <section class="hero">
     <div class="hero__slider">
-      <div class="item" v-for="film in top_rated" :key="film.id">
+      <div class="item" data-slide v-for="film in top_rated" :key="film.id">
         <img
           :src="`https://image.tmdb.org/t/p/w1280/${film.backdrop_path}`"
           :alt="film.title"
@@ -28,6 +28,13 @@
           </button>
         </div>
       </div>
+      <div class="index">
+        <span data-index>1</span>
+        <span data-index>2</span>
+        <span data-index>3</span>
+        <span data-index>4</span>
+        <span data-index>5</span>
+      </div>
     </div>
   </section>
 </template>
@@ -38,6 +45,7 @@ export default {
   data() {
     return {
       top_rated: [],
+      index: 0,
     };
   },
   methods: {
@@ -49,15 +57,33 @@ export default {
         const response = await data.json();
         if (data.ok) {
           this.top_rated = response.results.slice(0, 5);
-          console.log(this.top_rated);
         }
       } catch (error) {
         console.log(error);
       }
     },
+    activeSlide() {
+      const items = document.querySelectorAll('[data-slide]');
+      const indexIndicators = document.querySelectorAll('[data-index]');
+      items[0].classList.add('active');
+      indexIndicators[0].classList.add('active');
+
+      setInterval(() => {
+        this.index === items.length - 1 ? (this.index = 0) : this.index++;
+        items.forEach((slide) => slide.classList.remove('active'));
+        indexIndicators.forEach((indicator) =>
+          indicator.classList.remove('active'),
+        );
+        items[this.index].classList.add('active');
+        indexIndicators[this.index].classList.add('active');
+      }, 2000);
+    },
   },
   created() {
     this.getPopularFilms();
+  },
+  updated() {
+    this.activeSlide();
   },
 };
 </script>
@@ -85,12 +111,24 @@ export default {
   &__slider {
     position: relative;
     top: -80px;
+    display: grid;
+    grid-template-columns: 1fr minmax(400px, 1240px) 1fr;
+    align-items: center;
+    justify-items: end;
+    height: 600px;
+    width: 100%;
 
     .item {
-      position: relative;
+      position: absolute;
+      height: 600px;
+      width: 100%;
+      opacity: 0;
       display: grid;
       grid-template-columns: 1fr minmax(400px, 1240px) 1fr;
-      height: 600px;
+      transition: opacity 0.5s;
+      &.active {
+        opacity: 1;
+      }
 
       &::before {
         grid-column: 1/-1;
@@ -113,6 +151,7 @@ export default {
         width: 100%;
         height: 600px;
         object-fit: cover;
+        object-position: left;
         grid-column: 1/-1;
       }
 
@@ -141,6 +180,42 @@ export default {
           font-size: rem(14);
           line-height: rem(18);
           font-weight: 500;
+        }
+      }
+    }
+
+    .index {
+      position: relative;
+      grid-column: 2/3;
+      padding: 0px 95px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+
+      span {
+        color: var(--gray-400);
+        display: inline-block;
+        font-size: rem(12);
+        font-weight: 700;
+        line-height: rem(14);
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        &.active {
+          color: var(--text-color);
+          font-size: rem(14);
+          &::before {
+            position: absolute;
+            left: -26px;
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 3px;
+            border-radius: 6px;
+            background-color: var(--white);
+          }
         }
       }
     }
