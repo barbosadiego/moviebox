@@ -8,6 +8,21 @@
         />
         <div class="info">
           <h2>{{ film.title }}</h2>
+          <div class="popularity">
+            <span class="imdb">
+              <img src="@/assets/imdb.png" alt="" width="35" height="17" />
+              <span>{{ Math.round(film.popularity) }}</span>
+            </span>
+            <span class="vote">
+              <img
+                src="@/assets/tomato-icon.png"
+                alt=""
+                width="16"
+                height="17"
+              />
+              <span>{{ film.vote_average }}</span>
+            </span>
+          </div>
           <p>{{ film.overview }}</p>
           <button>
             <svg
@@ -29,11 +44,11 @@
         </div>
       </div>
       <div class="index">
-        <span data-index>1</span>
-        <span data-index>2</span>
-        <span data-index>3</span>
-        <span data-index>4</span>
-        <span data-index>5</span>
+        <button data-index>1</button>
+        <button data-index>2</button>
+        <button data-index>3</button>
+        <button data-index>4</button>
+        <button data-index>5</button>
       </div>
     </div>
   </section>
@@ -76,7 +91,7 @@ export default {
         );
         items[this.index].classList.add('active');
         indexIndicators[this.index].classList.add('active');
-      }, 2000);
+      }, 5000);
     },
   },
   created() {
@@ -117,6 +132,12 @@ export default {
     justify-items: end;
     height: 600px;
     width: 100%;
+    @media screen and (max-width: 500px) {
+      grid-template-columns: 1fr;
+      align-items: flex-end;
+      justify-items: center;
+      max-height: 100vh;
+    }
 
     .item {
       position: absolute;
@@ -126,8 +147,11 @@ export default {
       display: grid;
       grid-template-columns: 1fr minmax(400px, 1240px) 1fr;
       transition: opacity 0.5s;
+      z-index: -1;
       &.active {
         opacity: 1;
+        user-select: unset;
+        z-index: 5;
       }
 
       &::before {
@@ -168,6 +192,13 @@ export default {
         color: var(--text-color);
         padding: 0px 95px;
         max-width: 600px;
+        @media screen and (max-width: 768px) {
+          padding: 15px 30px;
+          max-width: 400px;
+        }
+        @media screen and (max-width: 500px) {
+          padding: 15px;
+        }
 
         h2 {
           font-size: rem(48);
@@ -176,10 +207,30 @@ export default {
           margin-bottom: 1rem;
         }
 
+        .popularity {
+          display: flex;
+          align-items: center;
+          gap: 35px;
+
+          & > span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          }
+
+          img {
+            max-width: 35px;
+            height: 17px;
+          }
+        }
+
         p {
           font-size: rem(14);
           line-height: rem(18);
           font-weight: 500;
+          @media screen and (max-width: 500px) {
+            max-width: 30ch;
+          }
         }
       }
     }
@@ -192,16 +243,26 @@ export default {
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      z-index: 10;
+      @media screen and (max-width: 768px) {
+        padding: 15px 30px;
+      }
+      @media screen and (max-width: 500px) {
+        grid-column: 1;
+        flex-direction: row;
+        align-items: flex-end;
+      }
 
-      span {
+      button {
         color: var(--gray-400);
-        display: inline-block;
         font-size: rem(12);
         font-weight: 700;
         line-height: rem(14);
         position: relative;
         display: flex;
         align-items: center;
+        background-color: transparent;
+        padding: 0px 10px;
 
         &.active {
           color: var(--text-color);
@@ -215,6 +276,12 @@ export default {
             height: 3px;
             border-radius: 6px;
             background-color: var(--white);
+            @media screen and (max-width: 500px) {
+              left: 12px;
+              top: -14px;
+              width: 3px;
+              height: 20px;
+            }
           }
         }
       }

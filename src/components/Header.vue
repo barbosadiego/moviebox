@@ -44,6 +44,9 @@ export default {
     gap: 50px;
     color: var(--text-color);
     padding: 15px 95px;
+    @media screen and (max-width: 860px) {
+      padding: 15px;
+    }
 
     .logo {
       height: 50px;
@@ -58,6 +61,9 @@ export default {
       border: 2px solid var(--border-color);
       padding: 6px 10px;
       border-radius: 6px;
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
 
       input {
         width: 100%;
@@ -87,6 +93,9 @@ export default {
         font-weight: 700;
         line-height: rem(24);
         text-transform: capitalize;
+        @media screen and (max-width: 768px) {
+          display: none;
+        }
       }
 
       .menu-area {
